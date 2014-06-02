@@ -1,0 +1,26 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: 5
+  template: template0
+
+development:
+  <<: *default
+  host: localhost
+  database: charting_playground_development
+  username: davejlong
+  password:
+
+test:
+  <<: *default
+  host: localhost
+  database: charting_playground_test
+  username: davejlong
+  password:
+
+production:
+  <<: *default
+  host: localhost
+  database: charting_playground_production
+  username: davejlong
+  password:
