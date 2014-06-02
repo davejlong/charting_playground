@@ -34,6 +34,7 @@ group :development, :test do
   gem 'rspec-rails', '>= 3.0.0.beta2'
 end
 group :test do
+  gem 'webmock'
   gem 'capybara'
   gem 'database_cleaner'
   gem 'faker'
