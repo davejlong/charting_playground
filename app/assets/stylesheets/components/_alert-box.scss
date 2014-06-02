@@ -1,0 +1,5 @@
+.alert-box {
+  &.error {
+    @extend %flash-error;
+  }
+}

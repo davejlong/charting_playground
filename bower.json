@@ -1,0 +1,20 @@
+{
+  "name": "Charting Playground",
+  "version": "0.0.0",
+  "homepage": "https://github.com/davejlong/charting_playground",
+  "authors": [
+    "David Long <dave@davejlong.com>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "d3": "~3.4.8",
+    "topojson": "~1.6.14"
+  }
+}

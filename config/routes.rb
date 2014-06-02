@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
-  resources :cities, only: [:index]
+  get 'cities', to: 'cities#index'
+  get 'cities/:city', to: 'cities#show'
   root to: 'cities#index'
 
   # Last route is a city search
