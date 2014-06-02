@@ -9,8 +9,9 @@ feature 'SeeClickFix API Client' do
 
   context 'when provided search context' do
     it 'queries top issues from specific town' do
-      pending 'Not implemented'
-      raise Exception
+      endpoint = SeeClickFix::SeeClickFix.new
+      response = endpoint.issues search: 'wallingford'
+      expect(response.headers['content-type']).to match(/^application\/json/)
     end
   end
 end
