@@ -5,4 +5,20 @@
 #cities-content {
   @include outer-container;
   main { @include span-columns(12); }
+
+  svg {
+    font-size: 10px;
+
+    .axis {
+      path, line {
+        fill: none;
+        stroke: #000;
+        shape-rendering: crispEdges;
+      }
+    }
+
+    .dot {
+      stroke: #000;
+    }
+  }
 }

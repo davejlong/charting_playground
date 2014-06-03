@@ -4,7 +4,7 @@ class CitiesController < ApplicationController
   end
 
   def show
-    render json: see_click_fix.issues(search: params[:city])
+    render json: see_click_fix.issues(address: params[:city], per_page: 50)
   end
 
   private
