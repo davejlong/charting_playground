@@ -1,5 +1,5 @@
 #= require d3/d3
-#= require topojson/topojson
+#= require leaflet/dist/leaflet.js
 
 class SeeClickFixVisualizer
   constructor: (el) ->
@@ -14,66 +14,33 @@ class SeeClickFixVisualizer
         else callback(data)
 
   dataRenderer: (data) ->
-    new DataMapper('#map', data).draw()
+    new DataRenderer(data.issues, 'map').draw()
 
-class DataMapper
-  margin: { top: 20, right: 20, bottom: 30, left: 40 }
-  width: 960
-  height: 300
-
-  constructor: (container, data) ->
-    @data = data.issues
-
-    @container = d3.select container
-
-    width = @container.style('width').match /^\d+/
-    @width = +width[0] if width.length
-    @width = @width - @margin.left - @margin.right
-    @height = @height - @margin.top - @margin.bottom
-
+class DataRenderer
+  constructor: (@data, @container) ->
   draw: ->
-    @container = @container
-      .append 'svg'
-      .attr 'width', @width + @margin.left + @margin.right
-      .attr 'height', @height + @margin.top + @margin.bottom
-      .append 'g'
-      .attr 'transform', "translate(#{@margin.left}, #{@margin.top})"
-    @drawAxes()
-    @drawDots()
+    centerPoint = [
+      d3.median @data, (d) -> d.lat
+      d3.median @data, (d) -> d.lng
+    ]
 
-  drawAxes: ->
-    @container.append 'g'
-      .attr('class', 'x axis').attr('transform', "translate(0, #{@height})")
-      .call(@xAxis())
-      .append('text').attr('class', 'label').attr('x', @width).attr('y', -6)
-      .style('text-anchor', 'end').text('Latitude')
-    @container.append 'g'
-      .attr('class', 'y axis').call(@yAxis())
-      .append('text').attr('class', 'label').attr('transform', 'rotate(-90)')
-      .attr('y', 6).attr('dy', '.71em').style('text-anchor', 'end')
-      .text('Longitude')
+    console.log centerPoint.toString()
+    @map = L.map(@container).setView centerPoint, 13
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo @map
 
-  drawDots: ->
-    @container.selectAll('.dot').data(@data).enter()
-      .append 'circle'
-      .attr 'class', 'dot'
-      .attr 'r', 6
-      .attr 'cx', (d) => @x()(d.lat)
-      .attr 'cy', (d) => @y()(d.lng)
-      .style 'fill', 'green'
+    @data.forEach (d) =>
+      # console.log(d)
+      marker = L.marker([d.lat, d.lng]).addTo(@map)
+        .bindPopup(d.description)
+        #.clickable()
+      #marker.on 'click', marker.togglePopup
 
-  x: ->
-    @_x ?= d3.scale.linear()
-      .range [0, @width]
-      .domain d3.extent(@data, (d) -> d.lat)
-      .nice()
-  y: ->
-    @_y ?= d3.scale.linear()
-      .range [@height, 0]
-      .domain d3.extent(@data, (d) -> d.lng)
-      .nice()
-
-  xAxis: -> @_xAxis ?= d3.svg.axis().scale(@x()).orient 'bottom'
-  yAxis: -> @_yAxis ?= d3.svg.axis().scale(@y()).orient 'left'
+    popup = L.popup()
+    @map.on 'click', (e) =>
+      popup.setLatLng e.latlng
+        .setContent "You clicked on the map at #{e.latlng.toString()}"
+        .openOn @map
 
 handlers.register 'SeeClickFixVisualizer', SeeClickFixVisualizer
