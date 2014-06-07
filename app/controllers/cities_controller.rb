@@ -1,10 +1,22 @@
 class CitiesController < ApplicationController
   def index
-    @city = params[:city]
+    # @city = params[:city]
+    @lat = params[:lat]
+    @lng = params[:lng]
   end
 
   def show
-    render json: see_click_fix.issues(address: params[:city], per_page: 100)
+    query = { per_page: 1000 }
+
+    if !params['lat'].blank? && !params['lng'].blank?
+      query.merge!({
+        lat: params['lat'],
+        lng: params['lng'],
+        zoom: 10
+      })
+    end
+
+    @issues = see_click_fix.issues(query)['issues']
   end
 
   private

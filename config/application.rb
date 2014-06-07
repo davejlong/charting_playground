@@ -26,7 +26,5 @@ module ChartingPlayground
         request_specs: false
       g.fixture_replacement :factory_girl, dir: "spec/factories"
     end
-
-    config.assets.paths << Rails.root.join('vendor', 'assets', 'bower_components')
   end
 end

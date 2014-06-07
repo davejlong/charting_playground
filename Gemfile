@@ -1,4 +1,6 @@
 source 'https://rubygems.org'
+source 'https://rails-assets.org'
+
 ruby '2.1.2'
 gem 'rails', '4.1.1'
 gem 'sass-rails', '~> 4.0.3'
@@ -42,3 +44,7 @@ group :test do
   gem 'launchy'
   gem 'selenium-webdriver'
 end
+
+# Assets
+gem 'rails-assets-d3', '~> 3.4'
+gem 'rails-assets-leaflet', '~> 0.7'

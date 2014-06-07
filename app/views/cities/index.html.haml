@@ -1,4 +1,5 @@
-%section#cities-content(data-city="#{@city}" data-handler='SeeClickFixVisualizer')
+%section#cities-content(data-lat="#{@lat}" data-lng="#{@lng}" data-handler='SeeClickFixVisualizer')
   %main
-    %p Searching for #{params[:city] || 'Top 20 issues'} from #{link_to 'http://seeclickfix.com', 'SeeClickFix'}
+    %p Searching for Top 100 issues from #{link_to 'SeeClickFix', 'http://seeclickfix.com'}
     #map
+    %small= link_to 'Lookup New Haven', city_path(lat: 41.3100, lng: -72.9263)
